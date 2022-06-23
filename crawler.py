@@ -5,7 +5,7 @@ class parameters:
     def __init__(self):
         PARSER = optparse.OptionParser()
         PARSER.add_option('-u', metavar='example.ex', dest='URL', help='Enter the URL without the http/s!')
-        PARSER.add_option('-s', metavar='yes/no', dest='HTTPSORNOT', help='Enjoy this option to specify the protocol. (Default HTTPS!)')
+        PARSER.add_option('-s', action='store_true', dest='HTTPSORNOT', help='Enter this option for HTTPS protocol.')
         self.OPTS, ARGS = PARSER.parse_args()
 
         self.check_parameters()
@@ -17,11 +17,7 @@ class parameters:
             print(colorama.Back.RED+'\nPlease type "--help" for more informations. <Specify the protocol "-u"> !'+colorama.Back.RESET+'\n')
             sys.exit()
 
-        if not self.OPTS.HTTPSORNOT:
-            print(colorama.Back.RED+'\nPlease type "--help" for more informations. <Specify the protocol "-s"> !'+colorama.Back.RESET+'\n')
-            sys.exit()
-
-        if self.OPTS.HTTPSORNOT.lower() == 'yes':
+        if self.OPTS.HTTPSORNOT:
             self.PROTOCOL = 'https://'
         else:
             self.PROTOCOL = 'http://'
