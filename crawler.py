@@ -1,3 +1,10 @@
+# Who is using this script have the 100% of responsabilities and aftermath about their actions.
+
+# (@u@) scripted by Skripto (@YourAnonSkripto) (@u@)
+
+#      " Keyboard is most powerful than a nuke. "
+
+
 import requests, re, optparse, sys, time, colorama, os
 from urllib import parse
 
