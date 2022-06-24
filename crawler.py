@@ -71,6 +71,7 @@ class crawler:
 
         print(colorama.Fore.RESET)
         self.link_saver()
+        sys.exit()
 
     def link_extractor(self):
         self.LINKLIST = re.findall('(?:href=")(.*?)"', self.RESPONSE.content.decode())
