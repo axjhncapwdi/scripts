@@ -1,3 +1,9 @@
+# Who is using this script have the 100% of responsabilities and aftermath about their actions.
+
+# (@u@) scripted by Skripto (@YourAnonSkripto) (@u@)
+
+#      " Keyboard is more powerful than a nuke. "
+
 from Crypto.Cipher import AES
 import hashlib, optparse
 
