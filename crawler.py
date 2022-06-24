@@ -2,7 +2,7 @@
 
 # (@u@) scripted by Skripto (@YourAnonSkripto) (@u@)
 
-#      " Keyboard is most powerful than a nuke. "
+#      " Keyboard is more powerful than a nuke. "
 
 
 import requests, re, optparse, sys, time, colorama, os
