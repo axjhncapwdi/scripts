@@ -31,25 +31,25 @@ class parameters:
 
 class crawler:
     def __init__(self, URL):
+        self.LINKLIST = []
+        self.URL = URL
+
         os.system('clear')
         print(
             colorama.Fore.LIGHTBLACK_EX+'''
-  _________                       __                
-  \_   ___ \____________ __  _  _|  |   ___________ 
-  /    \  \/\_  __ \__  \\\ \/ \/ /  | _/ __ \_  __ \ 
-  \     \____|  | \// __ \\\     /|  |_\  ___/|  | \/
-   \______  /|__|  (____  /\/\_/ |____/\___  >__|   
-          \/            \/                 \/       \033[39mSkripto \033[39m(\033[91m@\033[39mu\033[91m@\033[39m)
-            '''+colorama.Fore.RESET
-        )
+    _________                       __                             
+    \_   ___ \____________ __  _  _|  |   ___________       __     
+    /    \  \/\_  __ \__  \\\ \/ \/ /  | _/ __ \_  __ \   __|  |___ 
+    \     \____|  | \// __ \\\     /|  |_\  ___/|  | \/  /__    __/ 
+     \______  /|__|  (____  /\/\_/ |____/\___  >__|        |__|    Pentesting tool
+            \/            \/                 \/                    
+                '''+colorama.Fore.LIGHTBLACK_EX+'\n\t\t~S'+colorama.Fore.WHITE+'k'+colorama.Fore.LIGHTBLACK_EX+'ripto ('+colorama.Fore.LIGHTRED_EX+'@'+colorama.Fore.LIGHTBLACK_EX+'u'+colorama.Fore.LIGHTRED_EX+'@'+colorama.Fore.LIGHTBLACK_EX+')'+colorama.Fore.RESET)
 
-        self.URL = URL
-        print('\n Target ='+colorama.Fore.CYAN,URL+colorama.Fore.RESET)
-        
         try:
             self.RESPONSE = requests.get(URL)
+            print('\n Target ='+colorama.Fore.CYAN,URL+colorama.Fore.RESET)
+            time.sleep(1)
         except:
-            os.system('clear')
             print('\nUnable to find "'+colorama.Fore.CYAN+URL+colorama.Fore.RESET+'".\n')
             sys.exit()
         if self.RESPONSE.status_code == 200:
@@ -63,28 +63,37 @@ class crawler:
         time.sleep(1)
 
         self.link_extractor()
-        print(colorama.Fore.LIGHTYELLOW_EX)
-        self.result_printer()
-        if len(self.LINKLISTTW) == 0:
-            print('\n No links have been found.\n'+colorama.Fore.RESET)
-            sys.exit()    
-
-        print(colorama.Fore.RESET)
+        print('\n '+colorama.Back.LIGHTCYAN_EX+' '+colorama.Back.RESET+' is for primary links.\n ', end='')
+        time.sleep(1)
+        print(colorama.Back.LIGHTBLACK_EX+' '+colorama.Back.RESET+' is for secondary links.\n')
+        time.sleep(1)
+        print(colorama.Fore.WHITE+'\n Website Map:\n')
+        self.result_printer(URL)
+        if len(self.LINKLIST) == 0:
+            print(colorama.Fore.LIGHTBLACK_EX+' No links have been found.\n'+colorama.Fore.RESET)
+            sys.exit()
+        print()
         self.link_saver()
         sys.exit()
 
     def link_extractor(self):
-        self.LINKLIST = re.findall('(?:href=")(.*?)"', self.RESPONSE.content.decode())
+        self.HREF_LINKS = re.findall('(?:href=")(.*?)"', self.RESPONSE.content.decode())
 
-    def result_printer(self):
-        self.LINKLISTTW = []
-        for LINK in self.LINKLIST:
-            LINK = parse.urljoin(self.URL, LINK)
+    def result_printer(self, URL):
+        
+        LINK_COLOR = colorama.Fore.LIGHTCYAN_EX
+        for LINK in self.HREF_LINKS:
+            LINK = parse.urljoin(URL, LINK)
 
-            if self.URL in LINK:
-                print(' ',LINK)
-                self.LINKLISTTW.append(LINK)
+            if '#' in LINK:
+                LINK_COLOR = colorama.Fore.LIGHTBLACK_EX
 
+            if URL in LINK and LINK not in self.LINKLIST:
+                self.LINKLIST.append(LINK)
+                print(LINK_COLOR+' ',LINK+colorama.Fore.RESET)
+                LINK_COLOR = colorama.Fore.LIGHTCYAN_EX
+                self.result_printer(LINK)
+                
     def link_saver(self):
         NUM = 1
         try:
@@ -96,8 +105,8 @@ class crawler:
                 NUM += 1
         except:
             with open(self.URL.split('/')[2]+'-'+str(NUM)+'.txt','w') as FILE:
-                for LINK in self.LINKLISTTW:
-                    FILE.write(LINK+'\n')
+                for LINK in self.LINKLIST:
+                    FILE.write(' '+LINK+'\n')
                 FILE.close()
-                
+
 parameters()
